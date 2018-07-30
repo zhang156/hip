@@ -2,8 +2,8 @@
   <div class="tab-nav">
     <!--<Tag type="dot" color="blue">{{activeName}}</Tag>-->
     <span v-for="(item,index) in openOptions" :key="index">
-      <Tag type="dot" :name="item.name" :closable="item.name!='home'" :color="activeName===item.name?'blue':''"
-           @on-close="colsePage" @click.native="chooseTag(item)">{{ getResourceName(item.name) }}</Tag>
+      <!-- <Tag type="dot" :name="item.name" :closable="item.name!='home'" :color="activeName===item.name?'blue':''"
+           @on-close="colsePage" @click.native="chooseTag(item)">{{ getResourceName(item.name) }}</Tag> -->
     </span>
   </div>
 </template>
