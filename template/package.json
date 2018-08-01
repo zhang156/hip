@@ -93,16 +93,11 @@
     "cross-env": "^5.0.1",
     "cross-spawn": "^5.0.1",
     "mockjs": "^1.0.1-beta3",
-    {{#if_eq cssPreprocessor "less"}}
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    {{/if_eq}}
-    {{#if_eq cssPreprocessor "sass"}}
     "sass": "^1.6.2",
     "sass-loader": "^7.0.3",
     "node-sass": "^4.9.0",
-    {{/if_eq}}
-
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

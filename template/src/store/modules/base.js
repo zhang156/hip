@@ -1,8 +1,13 @@
+const app = require('@/lib/app');
+
 export default {
   state: {
+    appId: app.appId,
+    appName: app.appName,
+    appVersion: app.appVersion,
     activeName: '',
     openOptions: [{name: 'home', resourceName: '首页', path: '/home'}],
-    currentPath: []
+    currentPath: []    
   },
   mutations: {
     setActiveMenu: (state, data) => {

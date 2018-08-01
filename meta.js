@@ -187,4 +187,6 @@ module.exports = {
       printMessage(data, chalk)
     }
   },
+  // 跳过这些文件的解析  解决{{name}}报错问题
+  skipInterpolation: ["src/**/*.vue", "node_modules/**"]
 }

@@ -13,7 +13,26 @@ import Cookie from 'js-cookie';
 
 export default {
   state: {
-    user: null,
+    user: {},
+    token: null,
+    dropMenu: [
+      {
+        id: '1',
+        name: '个人中心'
+      },
+      {
+        id: '2',
+        name: '修改密码'
+      },
+      {
+        id: '3',
+        name: '锁屏'
+      },
+      {
+        id: '4',
+        name: '退出'
+      }
+    ],
     menu: [],
     roles: [],
     permissions: [],
@@ -39,10 +58,7 @@ export default {
   actions: {
     login: ({commit}, params) => {
       return loginApi(params).then((res) => {
-        Cookie.set('user_session', res.data.token);
-        commit('setUserRole', []);
-        commit('initMenu', []);
-        commit('setUserPermission', []);
+        Cookie.set('user_session', res.data.access_token, { expires: new Date(Date.now() + res.data.expires_in * 1000) });
       })
     },
     logout: ({commit}, params) => {
@@ -62,9 +78,13 @@ export default {
     },
     getUserProfile: ({commit}, parmas) => {
       return userProfileApi(parmas).then((res) => {
-        commit('setUserProfile', res.data.user);
-        commit('setUserRole', res.data.role);
-        commit('setUserPermission', res.data.permission);
+        if (res.data) {
+          commit('setUserProfile', res.data.user);
+          commit('setUserRole', res.data.role);
+          commit('setUserPermission', res.data.permission);
+        } else {
+          console.log('刚获取的用户信息为空')
+        }
       })
     },
     updatePasswd ({commit}, params) {
@@ -73,21 +93,21 @@ export default {
     updateUserProfile ({commit}, params) {
       return updateUserProfileApi(params);
     },
-    getUserRole: ({commit}, params) => {
-      return userRoleApi(params).then((res) => {
-        commit('setUserRole', res.data);
-      })
-    },
+    // getUserRole: ({commit}, params) => {
+    //   return userRoleApi(params).then((res) => {
+    //     commit('setUserRole', res.data);
+    //   })
+    // },
     getMenu: ({commit}, params) => {
       return userMenuApi(params).then((res) => {
         commit('initMenu', res.data || []);
       })
     },
-    getUserPermission: ({commit}, params) => {
-      return userPermissionApi(params).then((res) => {
-        commit('setUserPermission', res.data);
-      })
-    },
+    // getUserPermission: ({commit}, params) => {
+    //   return userPermissionApi(params).then((res) => {
+    //     commit('setUserPermission', res.data);
+    //   })
+    // },
     getUserSettings: ({commit}, params) => {
       return userSettingApi(params).then((res) => {
         commit('setUserSetting', res.data)

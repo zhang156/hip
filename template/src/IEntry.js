@@ -8,9 +8,9 @@ import {router} from './router'
 import store from './store'
 import iView from 'iview'
 import './theme/index.less'
-import './mock/mock.js'
+import './mock'
 import './directives/hasPermission'
-require(`./modules/${process.env.APP}/${process.env.APP}.js`)
+require(`./modules/${process.env.APP}/index.js`)
 
 Vue.use(iView)
 

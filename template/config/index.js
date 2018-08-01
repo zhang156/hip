@@ -17,6 +17,20 @@ module.exports = {
         pathRewrite: {
           '^/mdm-api': ''
         }
+      },
+      '/admin-api': {
+        target: 'http://172.16.201.50:7001/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/admin-api': ''
+        }
+      },
+      '/login-api': {
+        target: 'http://172.16.201.50:6001/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/login-api': ''
+        }
       }
     },
 

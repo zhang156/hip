@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import {routers} from './router';
 import iView from 'iview';
 import store from '../store';
-import App from '../lib/app'
+import App from '../lib/app';
 import Cookie from 'js-cookie';
 
 Vue.use(VueRouter)
@@ -26,24 +26,14 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.isAnonymous)) {
     next();
   } else {
-    // 登录
+    // 是否登录
     if (userSession) {
-      if (!store.state.auth.user) {
-        // 获取用户信息，用户角色，用户菜单数据
-        store.dispatch('getUserProfile', userSession).then(() => {
-          /* // 获取用户角色
-          store.dispatch('getUserRole', userSession).then(() => {
-            // 获取用户权限
-            store.dispatch('getUserPermission', userSession).then(() => {
-              // 获取用户菜单数据
-              store.dispatch('getMenu', userSession).then(() => {
-                fetchRoutesFromMenu(store.state.auth.menu);
-                next({...to, replace: true})
-              })
-            })
-          }) */
+      // 用户是否存在
+      if (!store.state.auth.user || !Object.keys(store.state.auth.user).length) {
+        // 获取用户信息，用户角色
+        store.dispatch('getUserProfile').then(() => {
           // 获取用户菜单数据
-          store.dispatch('getMenu', userSession).then(() => {
+          store.dispatch('getMenu', {appIds: [].concat(0, store.state.base.appId)}).then((res) => {
             fetchRoutesFromMenu(store.state.auth.menu);
             next({...to, replace: true})
           })
@@ -99,10 +89,10 @@ const fetchRoutesFromMenu = (menuData) => {
     let userRoutes = [];
     let isPublic = null
     menuData.map(m => {
-      isPublic = m.resourceName == '系统管理'
+      isPublic = m.appId === 0
       let newRoute = {
         path: m.resourceUrl,
-        name: m.name,
+        name: m.resourceName,
         meta: {title: m.resourceName}
       };
 
@@ -112,12 +102,14 @@ const fetchRoutesFromMenu = (menuData) => {
         m.children.map(child => {
           newRoute.children.push({
             path: child.resourceUrl.replace(m.resourceUrl + '/', ''),
-            name: child.name,
+            name: child.resourceName,
             meta: {title: child.resourceName},
+            // component: resolve => require([`${child.viewUrl}${child.viewComponent}`], resolve)
             component: isPublic ? resolve => require([`@/views${child.resourceUrl}/index.vue`], resolve) : resolve => require([`@/modules/${APP}/views${child.resourceUrl}.vue`], resolve)
           })
         })
       } else {
+        // newRoute.component = resolve => require([`${m.viewUrl}${m.viewComponent}`], resolve)
         newRoute.component = isPublic ? resolve => require([`@/views${m.resourceUrl}/index.vue`], resolve) : resolve => require([`@/modules/${APP}/views${m.resourceUrl}.vue`], resolve)
       }
       userRoutes.push(newRoute)

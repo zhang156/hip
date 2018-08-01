@@ -71,7 +71,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }), */
     new HtmlWebpackPlugin({
       // 模板来源
-      template: `./src/${modulePath}/${APP}/${APP}.html`,
+      template: `./src/${modulePath}/${APP}/index.html`,
       // 文件名称
       filename: `${config.build.assetsRoot}/${APP}/index.html`,
       favicon: path.resolve('favicon.ico'),

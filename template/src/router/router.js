@@ -20,9 +20,9 @@ export const homePage = {
     {
       path: 'home',
       name: 'home',
-      component: resolve => require(['@/views/home/home.vue'], resolve),
+      component: resolve => require([`@/modules/${process.env.APP}/views/home.vue`], resolve),
       meta: {
-        title: '首页'
+        title: '主页'
       }
     },
     {
@@ -36,32 +36,32 @@ export const homePage = {
   ]
 };
 
-export const page404 = {
-  path: '/404',
-  name: 'error-404',
-  meta: {
-    title: '404-页面不存在'
+export const pageError = [
+  {
+    path: '/404',
+    name: 'error-404',
+    meta: {
+      title: '404-页面不存在'
+    },
+    component: resolve => require(['@/views/error-page/404.vue'], resolve)
   },
-  component: resolve => require(['@/views/error-page/404.vue'], resolve)
-};
-
-export const page403 = {
-  path: '/403',
-  name: 'error-403',
-  component: resolve => require(['@/views/error-page/403.vue'], resolve),
-  meta: {
-    title: '403-权限不足'
+  {
+    path: '/403',
+    name: 'error-403',
+    component: resolve => require(['@/views/error-page/403.vue'], resolve),
+    meta: {
+      title: '403-权限不足'
+    }
+  },
+  {
+    path: '/500',
+    name: 'error-500',
+    component: resolve => require(['@/views/error-page/500.vue'], resolve),
+    meta: {
+      title: '500-服务端错误'
+    }
   }
-};
-
-export const page500 = {
-  path: '/500',
-  name: 'error-500',
-  component: resolve => require(['@/views/error-page/500.vue'], resolve),
-  meta: {
-    title: '500-服务端错误'
-  }
-};
+]
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 // export const otherRouter = {}
@@ -92,10 +92,8 @@ export const page500 = {
 export const routers = [
   loginRouter,
   homePage,
-  /* otherRouter, */
-  /* ...appRouter, */
-  page500,
-  page403,
-  page404,
-  ...require(`../modules/${APP}/router/${APP}-router.js`)
+  // otherRouter,
+  // ...appRouter,
+  ...pageError,
+  ...require(`../modules/${APP}/router/index.js`)
 ];

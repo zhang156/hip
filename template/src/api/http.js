@@ -1,20 +1,18 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import {router} from '../router'
-/* import iView from 'iview'; */
+import { router } from '../router';
 
-const baseURL = `/${process.env.APP}-api/`;
 const ajax = axios.create({
-  baseURL: baseURL,
+  baseURL: `/${process.env.APP}-api/`,
   timeout: 5000
 });
 
 // http request 拦截器
+let userSession = Cookie.get('user_session');
 ajax.interceptors.request.use(
   config => {
-    let userSession = Cookie.get('user_session');
     if (userSession) {
-      config.headers.Authorization = `${userSession}`;
+      config.headers.Authorization = `Bearer ${userSession}`;
     }
     return config;
   },
@@ -34,7 +32,9 @@ ajax.interceptors.response.use(
           // 401
           router.replace({
             path: '/login',
-            query: {redirect: router.currentRoute.fullPath}
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
           });
           break;
         case 403:
